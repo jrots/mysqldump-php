@@ -155,7 +155,8 @@ class Mysqldump
             'net_buffer_length' => self::MAXLINESIZE,
             'no-autocommit' => true,
             'no-create-info' => false,
-            'lock-tables' => true,
+            'lock-tables' => false,
+			'rename-tables' => array(),
             'routines' => false,
             'single-transaction' => true,
             'skip-triggers' => false,
@@ -880,6 +881,10 @@ class Mysqldump
             $ret[] = "`${k}` ${v['type_sql']}";
         }
         $ret = implode(PHP_EOL.",", $ret);
+		
+		if (isset($this->dumpSettings['rename-tables'][$viewName])) {
+			$viewName = $this->dumpSettings['rename-tables'][$viewName];
+		}
 
         $ret = "CREATE TABLE IF NOT EXISTS `$viewName` (".
             PHP_EOL.$ret.PHP_EOL.");".PHP_EOL;
@@ -1143,19 +1148,25 @@ class Mysqldump
         $ignore = $this->dumpSettings['insert-ignore'] ? '  IGNORE' : '';
 
         $count = 0;
+		
+		$insertTableName = $tableName;
+		if (isset($this->dumpSettings['rename-tables'][$tableName])) {
+			$insertTableName = $this->dumpSettings['rename-tables'][$tableName];
+		}		
+		
         foreach ($resultSet as $row) {
             $count++;
             $vals = $this->prepareColumnValues($tableName, $row);
             if ($onlyOnce || !$this->dumpSettings['extended-insert']) {
                 if ($this->dumpSettings['complete-insert']) {
                     $lineSize += $this->compressManager->write(
-                        "INSERT$ignore INTO `$tableName` (".
+                        "INSERT$ignore INTO `$insertTableName` (".
                         implode(", ", $colNames).
                         ") VALUES (".implode(",", $vals).")"
                     );
                 } else {
                     $lineSize += $this->compressManager->write(
-                        "INSERT$ignore INTO `$tableName` VALUES (".implode(",", $vals).")"
+                        "INSERT$ignore INTO `$insertTableName` VALUES (".implode(",", $vals).")"
                     );
                 }
                 $onlyOnce = false;
