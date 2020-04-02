@@ -6,14 +6,14 @@
  * Tags: mysql mysqldump pdo php7 php5 database php sql hhvm mariadb mysql-backup.
  *
  * @category Library
- * @package  Ifsnop\Mysqldump
+ * @package  Jrots\Mysqldump
  * @author   Diego Torres <ifsnop@github.com>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/ifsnop/mysqldump-php
+ * @link     https://github.com/jrots/mysqldump-php
  *
  */
 
-namespace Ifsnop\Mysqldump;
+namespace Jrots\Mysqldump;
 
 use Exception;
 use PDO;
