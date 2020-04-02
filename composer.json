@@ -5,7 +5,7 @@
     "keywords": ["mysql", "mysqldump", "pdo", "php7", "php5", "database", "php", "sql", "hhvm", "mariadb", "mysql-backup"],
     "homepage": "https://github.com/jrots/mysqldump-php",
     "license": "GPL-3.0-or-later",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev-master",
     "authors": [
         {
             "name" : "Diego Torres",
